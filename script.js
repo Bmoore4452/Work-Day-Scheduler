@@ -2,8 +2,8 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
-  var currentTime = dayjs().format("H");
-  var numberOfSlots = 10;
+  var currentTime = dayjs().hour();
+
   $("#currentDay").text(dayjs().format("dddd, MMMM D, YYYY"));
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
@@ -12,7 +12,7 @@ $(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
   function start() {
-    for (var i = 1; i <= numberOfSlots; i++) {
+    for (var i = 8; i <= 17; i++) {
       // create
       var div = $("<div>");
       var hourEl = $("<div>");
@@ -28,28 +28,43 @@ $(function () {
       icon.addClass("fas fa-save");
 
       // if statement to distinguish am and pm
-      // var timeOfDay;
-      // if (dayjs().format('H') >= 12){
-      //   timeOfDay = "PM"
-      // } else{
-      //   timeOfDay = "AM"
-      // }
-      hourEl.text(i + dayjs().format("A"));
-      btn.text();
-      div.attr("id", "" + i);
-      textarea.attr("id", "text" + i);
+      var timeOfDay;
 
-      var divId = div.attr("id");
-      var potId = currentTime;
-
-      console.log(typeof divId);
-      console.log(typeof potId);
-      if (divId === potId) {
-        div.addClass("present");
-      } else if (Number(divId) > Number(potId)) {
-        div.addClass("future");
+      if (i >= 12) {
+        timeOfDay = "PM";
       } else {
+        timeOfDay = "AM";
+      }
+
+      // Account for hours after 12 hour format
+      var text = i;
+      if (i === 13) {
+        text = 1;
+      }
+      if (i === 14) {
+        text = 2;
+      }
+      if (i === 15) {
+        text = 3;
+      }
+      if (i === 16) {
+        text = 4;
+      }
+      if (i === 17) {
+        text = 5;
+      }
+
+      div.attr("id",i);
+      hourEl.text(text + timeOfDay);
+
+      console.log(currentTime);
+      // Setting class for coloring 
+      if (currentTime === i) {
+        div.addClass("present");
+      } else if (currentTime > i) {
         div.addClass("past");
+      } else {
+        div.addClass("future");
       }
 
       btn.on("click", click);
@@ -57,15 +72,18 @@ $(function () {
       btn.append(icon);
       div.append(hourEl, textarea, btn);
       $(".container-fluid").append(div);
+      // Pull text from local storage
+      textarea.text(localStorage.getItem(i))
     }
   }
 
   function click() {
     // store text data into local storage
-    for (var i = 1; i < numberOfSlots; i++) {
-      var input = $("#text"+i).val();
-      console.log(input);
-    }
+
+    localStorage.setItem(
+      $(this).parent().attr("id"),
+      $(this).siblings("textarea").val()
+    );
   }
 
   start();
