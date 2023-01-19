@@ -2,6 +2,8 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
+  var currentTime = dayjs().format("H");
+  var numberOfSlots = 10;
   $("#currentDay").text(dayjs().format("dddd, MMMM D, YYYY"));
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
@@ -10,7 +12,7 @@ $(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
   function start() {
-    for (var i = 1; i <= 10; i++) {
+    for (var i = 1; i <= numberOfSlots; i++) {
       // create
       var div = $("<div>");
       var hourEl = $("<div>");
@@ -26,8 +28,29 @@ $(function () {
       icon.addClass("fas fa-save");
 
       // if statement to distinguish am and pm
-      hourEl.text(i + "AM");
+      // var timeOfDay;
+      // if (dayjs().format('H') >= 12){
+      //   timeOfDay = "PM"
+      // } else{
+      //   timeOfDay = "AM"
+      // }
+      hourEl.text(i + dayjs().format("A"));
       btn.text();
+      div.attr("id", "" + i);
+      textarea.attr("id", "text" + i);
+
+      var divId = div.attr("id");
+      var potId = currentTime;
+
+      console.log(typeof divId);
+      console.log(typeof potId);
+      if (divId === potId) {
+        div.addClass("present");
+      } else if (Number(divId) > Number(potId)) {
+        div.addClass("future");
+      } else {
+        div.addClass("past");
+      }
 
       btn.on("click", click);
       // append
@@ -39,7 +62,10 @@ $(function () {
 
   function click() {
     // store text data into local storage
-    console.log(this);
+    for (var i = 1; i < numberOfSlots; i++) {
+      var input = $("#text"+i).val();
+      console.log(input);
+    }
   }
 
   start();
