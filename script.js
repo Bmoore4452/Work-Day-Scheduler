@@ -54,11 +54,11 @@ $(function () {
         text = 5;
       }
 
-      div.attr("id",i);
+      div.attr("id", i);
       hourEl.text(text + timeOfDay);
 
       console.log(currentTime);
-      // Setting class for coloring 
+      // Setting class for coloring
       if (currentTime === i) {
         div.addClass("present");
       } else if (currentTime > i) {
@@ -73,7 +73,7 @@ $(function () {
       div.append(hourEl, textarea, btn);
       $(".container-fluid").append(div);
       // Pull text from local storage
-      textarea.text(localStorage.getItem(i))
+      textarea.text(localStorage.getItem(i));
     }
   }
 
