@@ -8,4 +8,4 @@ When the application loads, the user will the hours of the work day displayed. T
 
 ## Screenshot
 
-![Screenshot](./127.0.0.1_5501_index.html.png)
+![Screenshot](./assets/127.0.0.1_5501_index.html.png)
